@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="vertical-logo.png">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -221,8 +222,8 @@
         let currentEmail = '';
 
         function validateUinEmail(email) {
-            // Hanya izinkan email @uingusdur.ac.id atau @student.uingusdur.ac.id
-            const regex = /^[a-zA-Z0-9._%+-]+@(student\.)?uingusdur\.ac\.id$/;
+            // Hanya izinkan email @uingusdur.ac.id atau @mhs.uingusdur.ac.id
+            const regex = /^[a-zA-Z0-9._%+-]+@(.+\.)?uingusdur\.ac\.id$/;
             return regex.test(email);
         }
 
@@ -279,7 +280,7 @@
                 return;
             }
             if (!validateUinEmail(email)) {
-                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @student.uingusdur.ac.id)');
+                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @mhs.uingusdur.ac.id)');
                 return;
             }
 
@@ -305,7 +306,7 @@
                 return;
             }
             if (!validateUinEmail(email)) {
-                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @student.uingusdur.ac.id)');
+                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @mhs.uingusdur.ac.id)');
                 return;
             }
             currentEmail = email;
@@ -360,7 +361,7 @@
             }
 
             if (!validateUinEmail(email)) {
-                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @student.uingusdur.ac.id)');
+                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @mhs.uingusdur.ac.id)');
                 return;
             }
 
@@ -388,5 +389,6 @@
         }
     </script>
 </body>
+
 
 </html>
