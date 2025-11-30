@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - UIN K.H. Abdurrahman Wahid Pekalongan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Dashboard Container -->
+    <div class="dashboard-container" id="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="horizontal-logo.png" alt="Logo UIN Gusdur" class="logo-sidebar">
+            </div>
+            <div class="user-profile">
+                <div class="avatar-circle">
+                    <span id="dashboard-avatar">U</span>
+                </div>
+                <div class="user-info">
+                    <p class="user-name" id="dashboard-user-name">Nama Pengguna</p>
+                    <p class="user-role" id="dashboard-user-role">Mahasiswa</p>
+                    <p class="user-email" id="dashboard-sidebar-email">user@uingusdur.ac.id</p>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-id-card"></i> Profil</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-envelope"></i> Email Pemulihan</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-lock"></i> Update Password</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-wifi"></i> Cara Connect Eduroam</a>
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>
+                    Keluar</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <button class="btn-hamburger"><i class="fa-solid fa-bars"></i></button>
+                <div class="top-user-icon"><i class="fa-regular fa-user"></i></div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="welcome-banner">
+                    <p>Selamat datang <strong><span id="dashboard-welcome-email">Pengguna</span></strong></p>
+                    <p class="current-date" id="current-date">Minggu, 30 November 2025</p>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-logo-center">
+                        <img src="horizontal-logo.png" alt="Logo UIN Gusdur">
+                    </div>
+                    <div class="activation-success-text">
+                        <p>Selamat, Akun anda <strong id="dashboard-success-email">user@uingusdur.ac.id</strong> telah
+                            berhasil teraktivasi.</p>
+                        <p>Untuk terhubung dengan internet eduroam UIN K.H. Abdurrahman Wahid Pekalongan, silahkan ikuti
+                            petunjuk berikut.</p>
+                        <p class="link-text">Petunjuk lengkap <a href="#" onclick="logout()">klik di sini <i
+                                    class="fa-regular fa-hand-pointer"></i></a>.</p>
+                    </div>
+
+                    <div class="eduroam-steps">
+                        <p class="step-title">Langkah cepat terhubung eduroam:</p>
+                        <button class="btn-eduroam">iPhone / Mac OS / iPadOS <i class="fa-brands fa-apple"></i></button>
+                        <button class="btn-eduroam">Android <i class="fa-brands fa-android"></i></button>
+                    </div>
+
+                    <div class="dashboard-footer-note">
+                        <p>Mohon gunakan aplikasi ini dengan bijak dan bertanggung jawab.</p>
+                    </div>
+                    <div class="dashboard-contact">
+                        <p>Jika ada pertanyaan atau kendala, silahkan hubungi kami melalui email <a
+                                href="mailto:info@uingusdur.ac.id">info@uingusdur.ac.id</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const email = localStorage.getItem('userEmail');
+        if (!email) {
+            window.location.href = 'index.html';
+        }
+
+        // Populate Dashboard
+        const namePart = email.split('@')[0];
+        const displayName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+        const avatarLetter = namePart.charAt(0).toUpperCase();
+
+        document.getElementById('dashboard-sidebar-email').textContent = email;
+        document.getElementById('dashboard-welcome-email').textContent = displayName;
+        document.getElementById('dashboard-user-name').textContent = displayName;
+        document.getElementById('dashboard-avatar').textContent = avatarLetter;
+        document.getElementById('dashboard-success-email').textContent = email;
+
+        // Set current date
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('id-ID', options);
+
+        function logout() {
+            localStorage.removeItem('userEmail');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>
